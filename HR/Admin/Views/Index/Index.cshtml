@@ -1,0 +1,50 @@
+﻿@{
+    Admin.Contact user = ViewBag.user;
+    if (user == null) {
+        Response.Redirect("/Admin");
+    }
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section>
+    <h2>Welcome Back @user.name!</h2>
+
+    @if (user.level == Admin.Models.AuthLevel.ADMIN.ToString()) {
+        <article>
+            <span class="heading">Job Postings</span>
+            <ul>
+                <li><strong>View All</strong> - Display all job postings in the system.</li>
+                <li><strong>View By Category</strong> - This will display all the categories in the system, giving you the option to view all the job postings for a given category.</li>
+                <li><strong>View By Location</strong> - This will display all the locations in the system, giving you the option to view all the job postings for a given location.</li>
+                <li><strong>View Archive</strong> - This will display all the archived job postings in the system.</li>
+                <li><strong>Add New</strong> - Create a new job posting.</li>
+            </ul>
+        </article>
+    }
+    <article>
+        <span class="heading">Applications</span>
+        <ul>
+            <li><strong>View All</strong> - Display all job applications in the system.</li>
+            <li><strong>View By Job</strong> - This will display all the jobs in the system, giving you the option to view all the applications for a given job.</li>
+            <li><strong>View By Category</strong> - This will display all the categories in the system, giving you the option to view all the applications for a given job within that category.</li>
+            <li><strong>View By Location</strong> - This will display all the locations in the system, giving you the option to view all the applications for a given job at that location.</li>
+            <li><strong>View By Experience</strong> - This will display all the experience levels in the system, giving you the option to view all the applications for a given job within that experience level.</li>
+            <li><strong>View By Education</strong> - This will display all the education levels in the system, giving you the option to view all the applications for a given job within that education level.</li>
+            <li><strong>View Archive</strong> - This will display all the archived job applications in the system.</li>
+        </ul>
+    </article>
+    
+    @if (user.level == Admin.Models.AuthLevel.ADMIN.ToString()) {
+        <article>
+            <span class="heading">Tools</span>
+            <ul>
+                <li><strong>Manage Contacts</strong> - Manage the people that may be marked as contacts for the application. This also controls administrative users.</li>
+                <li><strong>Manage Categories</strong> - Manage the different categories of jobs.</li>
+                <li><strong>Manage Locations</strong> - Manage the different locations that a job can be posted for.</li>
+                <li><strong>Manage Experience</strong> - Create/Remove experience levels.</li>
+                <li><strong>Manage Education</strong> - Create/Remove education levels.</li>
+            </ul>
+        </article>
+    }
+</section>
+

@@ -1,0 +1,7 @@
+﻿.index_desc{ float:left; width: 75%; }
+
+.index_add {float:right; }
+
+table tbody td.last{
+    text-align: center;
+}

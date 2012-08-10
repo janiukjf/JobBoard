@@ -1,0 +1,87 @@
+﻿@{
+    List<HR.Experience> exps = ViewBag.exps;
+    exps = (exps == null) ? new List<HR.Experience>() : exps;
+
+    List<HR.Education> eds = ViewBag.eds;
+    eds = (eds == null) ? new List<HR.Education>() : eds;
+
+    List<HR.Shift> shifts = ViewBag.shifts ?? new List<HR.Shift>();
+
+    List<HR.Models.DisplayableLocation> locs = ViewBag.locs;
+    locs = (locs == null) ? new List<HR.Models.DisplayableLocation>() : locs;
+
+    List<HR.Models.DisplayableJob> jobs = ViewBag.jobs;
+    jobs = (jobs == null) ? new List<HR.Models.DisplayableJob>() : jobs;
+    
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="home_header">
+    <div class="left_col">
+        <p>Welcome to the CURT Manufacturing, LLC Job Board. Below you will find the most recently posted listings. To apply for a position, click the read more link at the end of the job description and proceed through the application process.</p>
+        <p>If you would like to view listings for a specific job type, please use the menu at the top of the page to filter into job type.</p>
+    </div>
+    <div id="lookup">
+        <form method="get" action="/Search">
+            <label for="exp">
+                Experience
+                <select name="exp" id="exp">
+                    <option value="">- Select Experience -</option>
+                    @foreach (HR.Experience ex in exps) {
+                        <option value="@ex.id">@ex.experience1</option>
+                    }
+                </select>
+            </label>
+            <label for="edu">
+                Education
+                <select name="edu" id="edu">
+                    <option value="">- Select Education -</option>
+                    @foreach (HR.Education ed in eds) {
+                        <option value="@ed.id">@ed.edu_level</option>
+                    }
+                </select>
+            </label>
+            <label for="loc">
+                Location
+                <select name="loc" id="loc">
+                    <option value="">- Select Location -</option>
+                    @foreach (HR.Models.DisplayableLocation loc in locs) {
+                        <option value="@loc.id">@(loc.city + ", " + loc.abbr)</option>
+                    }
+                </select>
+            </label>
+            <label for="shift">
+                Shift
+                <select name="shift" id="shift">
+                    <option value="">- Select Shift -</option>
+                    @foreach (HR.Shift sh in shifts) {
+                        <option value="@sh.id">@sh.shift1</option>
+                    }
+                </select>
+            </label>
+            <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+        </form>
+    </div>
+    <img src="/Content/img/shadow.png" class="clearfix shadow" />
+</section>
+
+<section id="listings">
+    @foreach (HR.Models.DisplayableJob job in jobs) {
+        <article>
+            <div class="desc">
+                <span class="title">@job.title</span>
+                <p>@job.short_desc</p>
+                <span class="date">Posted: @Convert.ToDateTime(job.date_added).ToShortDateString()</span>
+            </div>
+            <div class="buttons">
+                <a href="/Job/View/@job.id" title="Read Full Description for @job.title">Read More</a>
+                <a href="/Job/Apply/@job.id" title="Apply for @job.title">Apply</a>
+            </div>
+            <div class="clearfix"></div>
+        </article>
+    }
+</section>
+
+
+

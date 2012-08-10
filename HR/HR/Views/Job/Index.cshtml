@@ -1,0 +1,42 @@
+﻿@{
+    HR.Models.DisplayableJob job = ViewBag.job;
+    job = (job == null) ? new HR.Models.DisplayableJob() : job;
+    string[] shifts = job.JobShifts.Select(x => x.Shift.shift1).ToArray();
+    string[] categories = job.JobCategories.Select(x => x.Category.name).ToArray();
+    
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@job.title</h2>
+
+<p>@job.short_desc</p>
+
+<div class="job_specs">
+    <p><strong>Job Status: </strong>@job.status</p>
+    <p><strong>Job Category: </strong>@String.Join(", ",categories)</p>
+    <p><strong>Shift: </strong>@String.Join(", ",shifts)</p>
+    <p><strong>Experience: </strong>@((job.exp == null || job.exp.experience1 == null)?"N/A":job.exp.experience1)</p>
+    <p><strong>Location: </strong>@(job.loc.city + ", " + job.loc.abbr)</p>
+    <p><strong>Salary Type: </strong>@job.salary_type</p>
+    <p><strong>Education: </strong>@((job.ed == null || job.ed.edu_level == null)?"N/A":job.ed.edu_level)</p>
+    <p><strong>Driving Position: </strong>@((job.isDriving == 1)?"Yes":"No")</p>
+    <p><strong>Job ID: </strong>@job.id</p>
+    <p><strong>Date Posted: </strong>@Convert.ToDateTime(job.date_added).ToShortDateString()</p>
+</div>
+
+<div class="apply_box">
+    <span>To apply for this position, click the button below.</span>
+    <a href="/Job/Apply/@job.id">Apply</a>
+</div>
+<div class="clearfix"></div>
+
+<p>@Html.Raw(job.long_desc)</p>
+
+<div class="contact_info">
+    <p><strong>Contact: </strong>@job.contact_info.name</p>
+    <p><strong>Address: </strong>@(job.contact_info.street + " " + job.contact_info.city + ", " + job.contact_info.abbr)</p>
+    <p><strong>Phone: </strong>@job.contact_info.phone</p>
+    <p><strong>Fax: </strong>@job.contact_info.fax</p>
+    <p><strong>Email: </strong>@job.contact_info.email</p>
+</div>

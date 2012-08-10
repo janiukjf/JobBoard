@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="JobBoard" Class="JobBoardDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=JobBoard;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="JobBoardConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Categories" Member="Categories">
+    <Type Name="Category">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="short_desc" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="long_desc" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="date_added" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="parent" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="JobCategory_Category" Member="JobCategory" AccessModifier="Internal" ThisKey="id" OtherKey="cat" Type="JobCategory" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Contact" Member="Contacts">
+    <Type Name="Contact">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="street" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="city" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="state_id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="phone" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="fax" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="username" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Association Name="Contact_State" Member="States" ThisKey="state_id" OtherKey="id" Type="State" />
+      <Association Name="Job_Contact" Member="Job" ThisKey="id" OtherKey="contact" Type="Job" IsForeignKey="true" />
+      <Association Name="JobContact_Contact" Member="JobContact" AccessModifier="Internal" ThisKey="id" OtherKey="contact" Type="JobContact" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Education" Member="Educations">
+    <Type Name="Education">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="edu_level" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="date_added" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Job_Education" Member="Job" ThisKey="id" OtherKey="education" Type="Job" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Experience" Member="Experiences">
+    <Type Name="Experience">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="experience" Member="experience1" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="date_added" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Job_Experience" Member="Job" ThisKey="id" OtherKey="experience" Type="Job" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Jobs" Member="Jobs">
+    <Type Name="Job">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="short_desc" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="long_desc" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="date_added" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="experience" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="location" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="education" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="contact" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="poster" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="isDriving" Type="System.Int32" DbType="int NOT NULL" CanBeNull="false" />
+      <Column Name="salary_type" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="status" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="jobState" Type="System.String" DbType="VarChar (10) NOT NULL" CanBeNull="false" />
+      <Association Name="Job_Contact" Member="Contacts" ThisKey="contact" OtherKey="id" Type="Contact" />
+      <Association Name="Job_Education" Member="Educations" ThisKey="education" OtherKey="id" Type="Education" />
+      <Association Name="Job_Experience" Member="Experiences" ThisKey="experience" OtherKey="id" Type="Experience" />
+      <Association Name="Job_Location" Member="Locations" ThisKey="location" OtherKey="id" Type="Location" />
+      <Association Name="Job_JobCategory" Member="JobCategories" ThisKey="id" OtherKey="job" Type="JobCategory" />
+      <Association Name="Job_JobShift" Member="JobShifts" ThisKey="id" OtherKey="job" Type="JobShift" />
+      <Association Name="Job_JobContact" Member="Notifications" ThisKey="id" OtherKey="job" Type="JobContact" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Locations" Member="Locations">
+    <Type Name="Location">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="city" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="state_id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="Location_State" Member="States" ThisKey="state_id" OtherKey="id" Type="State" />
+      <Association Name="Job_Location" Member="Job" ThisKey="id" OtherKey="location" Type="Job" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.States" Member="States">
+    <Type Name="State">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="state" Member="state1" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="abbr" Type="System.String" DbType="Char(3) NOT NULL" CanBeNull="false" />
+      <Association Name="Location_State" Member="Location" ThisKey="id" OtherKey="state_id" Type="Location" IsForeignKey="true" />
+      <Association Name="Contact_State" Member="Contact" ThisKey="id" OtherKey="state_id" Type="Contact" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EducationalBackground" Member="EducationalBackgrounds">
+    <Type Name="EducationalBackground">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="school_type" Type="System.String" DbType="VarChar(300)" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="VarChar(300)" CanBeNull="true" />
+      <Column Name="city" Type="System.String" DbType="VarChar(300)" CanBeNull="true" />
+      <Column Name="state_id" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="years_completed" Type="System.Decimal" DbType="Decimal(18,1)" CanBeNull="true" />
+      <Column Name="gpa" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="degree" Type="System.String" DbType="VarChar(300)" CanBeNull="true" />
+      <Column Name="app_id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="Application_EducationalBackground" Member="Application" ThisKey="app_id" OtherKey="id" Type="Application" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EmploymentHistory" Member="EmploymentHistories">
+    <Type Name="EmploymentHistory">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="employer" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="phone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="start_date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="end_date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="starting_title" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="end_title" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="supervisor" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="VarChar(400)" CanBeNull="true" />
+      <Column Name="city" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="state_id" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="canContact" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="summary" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="reason_leaving" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="start_pay" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="end_pay" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="app_id" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Association Name="Application_EmploymentHistory" Member="Application" ThisKey="app_id" OtherKey="id" Type="Application" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PreviousEmployment" Member="PreviousEmployments">
+    <Type Name="PreviousEmployment">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="position" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="date_start" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="date_end" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="app_id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="Application_PreviousEmployment" Member="Application" ThisKey="app_id" OtherKey="id" Type="Application" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[References]" Member="References">
+    <Type Name="Reference">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="job_title" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="phone" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="years_known" Type="System.Decimal" DbType="Decimal(18,1)" CanBeNull="true" />
+      <Column Name="app_id" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Association Name="Application_Reference" Member="Application" ThisKey="app_id" OtherKey="id" Type="Application" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.JobCategory" Member="JobCategories">
+    <Type Name="JobCategory">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="job" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="cat" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="JobCategory_Category" Member="Category" ThisKey="cat" OtherKey="id" Type="Category" Cardinality="One" />
+      <Association Name="Job_JobCategory" Member="Job1" AccessModifier="Internal" ThisKey="job" OtherKey="id" Type="Job" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Applications" Member="Applications">
+    <Type Name="Application">
+      <Column Name="id" AutoSync="Never" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="date_added" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="fname" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="lname" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="mname" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="city" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="state_id" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="zip" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="phone1" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="phone2" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="referred_by" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="isAdult" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="isCitizen" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="isEmployed" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="date_available" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="desired_start" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="desired_end" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="employment_type" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="preferred_shift" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="additional_info" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="service_branch" Type="System.String" DbType="VarChar(400)" CanBeNull="true" />
+      <Column Name="service_start" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="service_end" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="rank_duties" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="date_dischaged" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="dob" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="valid_license" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="vehicles_driven" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Column Name="years_driving" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="driver_license_num" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="chauffeur_license_num" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="driver_license_state" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="chauffeur_license_state" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="driver_license_exp" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="chauffeur_license_exp" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="inAccidents" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="accidents_desc" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="license_suspended" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="suspended_desc" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="traffic_violations" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="violations_desc" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="job_id" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="previousEmployee" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="previousExplanation" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="status" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="dateSubmitted" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Application_EducationalBackground" Member="EducationalBackgrounds" ThisKey="id" OtherKey="app_id" Type="EducationalBackground" />
+      <Association Name="Application_EmploymentHistory" Member="EmploymentHistories" ThisKey="id" OtherKey="app_id" Type="EmploymentHistory" />
+      <Association Name="Application_PreviousEmployment" Member="PreviousEmployments" ThisKey="id" OtherKey="app_id" Type="PreviousEmployment" />
+      <Association Name="Application_Reference" Member="References" ThisKey="id" OtherKey="app_id" Type="Reference" />
+      <Association Name="Application_Conviction" Member="Convictions" ThisKey="id" OtherKey="app_id" Type="Conviction" />
+      <Association Name="Application_ApplicationFile" Member="ApplicationFiles" ThisKey="id" OtherKey="app_id" Type="ApplicationFile" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Convictions" Member="Convictions">
+    <Type Name="Conviction">
+      <Column Name="id" AutoSync="Never" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="conviction" Member="conviction1" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="date_convicted" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="app_id" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Association Name="Application_Conviction" Member="Application" ThisKey="app_id" OtherKey="id" Type="Application" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ApplicationFile" Member="ApplicationFiles">
+    <Type Name="ApplicationFile">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="app_id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="size" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="fileContent" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="fileName" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="Application_ApplicationFile" Member="Application" AccessModifier="Internal" ThisKey="app_id" OtherKey="id" Type="Application" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.JobShift" Member="JobShifts">
+    <Type Name="JobShift">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="job" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="shift" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="JobShift_Shift" Member="Shift" Storage="_Shifts" ThisKey="shift" OtherKey="id" Type="Shift" Cardinality="One" />
+      <Association Name="Job_JobShift" Member="Job1" AccessModifier="Internal" ThisKey="job" OtherKey="id" Type="Job" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Shift" Member="Shifts">
+    <Type Name="Shift">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="shift" Member="shift1" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="date_added" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="JobShift_Shift" Member="JobShift" AccessModifier="Internal" ThisKey="id" OtherKey="shift" Type="JobShift" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.JobContact" Member="JobContacts">
+    <Type Name="JobContact">
+      <Column Name="id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="job" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="contact" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Association Name="JobContact_Contact" Member="Contact" ThisKey="contact" OtherKey="id" Type="Contact" Cardinality="One" />
+      <Association Name="Job_JobContact" Member="Job1" AccessModifier="Internal" ThisKey="job" OtherKey="id" Type="Job" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

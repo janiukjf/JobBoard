@@ -1,0 +1,46 @@
+﻿@{
+    List<Admin.Education> eds = ViewBag.eds;
+    eds = (eds == null) ? new List<Admin.Education>() : eds;
+    
+    string msg = ViewBag.msg;
+    msg = (msg == null) ? "" : msg;
+    
+    ViewBag.Title = "Education Levels";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="/Admin/Content/css/education.css" rel="stylesheet" type="text/css" />
+<p class="index_desc">
+    Below you will find a list of all the job education levels in the system. If you'd like to add a new education level, click the button to the right.
+</p>
+
+<a href="/Admin/Education/Add" title="Add Education Level" class="index_add">
+    <img src="/Admin/Content/img/add_education.png" alt="Add Education Level" />
+</a>
+<div class="clearfix"></div>
+
+@if (msg.Length > 0) {
+    <p class="err">@msg</p>
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>Education</th>
+            <th>Date Added</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Admin.Education ed in eds) {
+            <tr>
+                <td>@ed.edu_level</td>
+                <td>@Convert.ToDateTime(ed.date_added)</td>
+                <td class="last">
+                    <a href="/Admin/Education/@ed.id" title="Edit Education">Edit</a> | 
+                    <a href="/Admin/Education/Delete/@ed.id" class="del" title="Delete Education">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="/Admin/Scripts/custom/education.js" type="text/javascript"></script>

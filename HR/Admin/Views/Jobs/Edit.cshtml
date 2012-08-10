@@ -1,0 +1,199 @@
+﻿@{
+    Admin.Job job = ViewBag.job;
+    job = (job == null) ? new Admin.Job() : job;
+    
+    List<Admin.Experience> exps = ViewBag.exps;
+    exps = (exps == null) ? new List<Admin.Experience>() : exps;
+
+    List<Admin.Education> eds = ViewBag.eds;
+    eds = (eds == null) ? new List<Admin.Education>() : eds;
+
+    List<Admin.Models.DisplayableLocation> locs = ViewBag.locs;
+    locs = (locs == null) ? new List<Admin.Models.DisplayableLocation>() : locs;
+
+    List<Admin.Models.DisplayableContact> cons = ViewBag.cons;
+    cons = (cons == null) ? new List<Admin.Models.DisplayableContact>() : cons;
+
+    List<Admin.Category> cats = ViewBag.cats;
+    cats = (cats == null) ? new List<Admin.Category>() : cats;
+
+    List<Admin.Shift> shifts = ViewBag.shifts ?? new List<Admin.Shift>();
+    List<Admin.Models.DisplayableContact> contacts = ViewBag.contacts ?? new List<Admin.Models.DisplayableContact>();
+
+    ViewBag.Title = "Edit "+job.title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit @job.title</h2>
+
+<form class="input_form" method="post" action="/Admin/Jobs/Save/@job.id">
+    <label for="title">
+        Job Title
+        <input type="text" name="title" placeholder="Enter the title" value="@job.title" />
+        <span class="helper">Possible edit: @ViewBag.job_title</span>
+    </label>
+
+    <label for="short_desc">
+        Short Description
+        <input type="text" name="short_desc" placeholder="Enter short description" value="@job.short_desc" />
+        <span class="helper">Possible edit: @ViewBag.short_desc</span>
+    </label>
+
+    <label for="salary_type">
+        Salary Type
+        <input type="text" name="salary_type" id="salary_type" placeholder="Enter salary type i.e Hourly, Salary" value="@job.salary_type" />
+    </label>
+
+    <label for="status">
+        Status
+        <input type="text" name="status" id="status" placeholder="Enter job status i.e Full Time, Part Time" value="@job.status" />
+    </label>
+
+    <label for="long_desc">
+        Long Description
+        <textarea rows="25" cols="120" name="long_desc" id="long_desc" placeholder="Enter the long description">@job.long_desc.Replace("<br />","\n")</textarea>
+        <span class="helper">Possible edit: @((ViewBag.long_desc != null) ? ViewBag.long_desc.Replace("<br />", "\n") : "")</span>
+    </label>
+
+    <label for="experience">
+        Experience
+        <select name="experience" id="experience">
+            <option value="@Guid.Empty">- Select Preferred Experience -</option>
+            @foreach (Admin.Experience exp in exps) {
+                <option value="@exp.id" @((exp.id == job.experience)?"selected=selected":"")>@exp.experience1</option>
+            }
+        </select>
+    </label>
+
+    <label for="education">
+        Education
+        <select name="education" id="education">
+            <option value="@Guid.Empty">- Select Preferred Education -</option>
+            @foreach (Admin.Education ed in eds) {
+                <option value="@ed.id" @((ed.id == job.education)?"selected=selected":"")>@ed.edu_level</option>
+            }
+        </select>
+    </label>
+
+    <label for="location">
+        Job Location
+        <select name="location" id="location">
+            <option value="@Guid.Empty">- Select Location -</option>
+            @foreach (Admin.Models.DisplayableLocation loc in locs) {
+                <option value="@loc.id" @((loc.id == job.location)?"selected=selected":"")>@(loc.city + ", " + loc.abbr)</option>
+            }
+        </select>
+    </label>
+
+    <label for="contact">
+        Contact Person
+        <select name="contact" id="contact">
+            <option value="@Guid.Empty">- Select Contact Person -</option>
+            @foreach (Admin.Models.DisplayableContact con in cons) {
+                <option value="@con.id" @((con.id == job.contact)?"selected=selected":"")>@con.name</option>
+            }
+        </select>
+    </label>
+
+    <label for="isDriving_yes">
+        Driving Position
+        <input type="radio" name="isDriving" id="isDriving_yes" value="1" @((job.isDriving == 1)?"checked=checked":"") />Yes
+        <input type="radio" name="isDriving" id="isDriving_no" value="0" @((job.isDriving == 0)?"checked=checked":"") />No
+    </label>
+
+    <label for="jobState">
+        Current State
+        <select id="jobState" name="jobState">
+            @foreach (Admin.Models.JobState state in Enum.GetValues(typeof(Admin.Models.JobState))) {
+                <option value="@state" @((state.ToString() == job.jobState) ? "selected=selected" : "")>@state</option>
+            }
+        </select>
+    </label>
+
+    <label for="cat_select">
+        Select Job Categories
+        <select id="edit_cat_select">
+            <option value="0">- Select Category -</option>
+            @foreach (Admin.Category cat in cats) {
+                <option value="@cat.id">@cat.name</option>
+            }
+        </select>
+    </label>
+    <table class="cat_table">
+        <thead>
+            <tr>
+                <th>Categories</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Admin.Category jc in job.JobCategories.Select(x => x.Category).ToList<Admin.Category>()) {
+                <tr>
+                    <td>@jc.name</td>
+                    <td>
+                        <a href="/Admin/Jobs/DeleteCategory?cat_id=@jc.id&job_id=@job.id" class="edit_del_cat" id="@jc.id" title="Delete @jc.name">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <label for="shift_select">
+        Select Job Shift
+        <select id="edit_shift_select">
+            <option value="0">- Select Shift -</option>
+            @foreach (Admin.Shift shift in shifts) {
+                <option value="@shift.id">@shift.shift1</option>
+            }
+        </select>
+    </label>
+    <table class="shift_table">
+        <thead>
+            <tr>
+                <th>Shifts</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Admin.Shift js in job.JobShifts.Select(x => x.Shift).ToList<Admin.Shift>()) {
+                <tr>
+                    <td>@js.shift1</td>
+                    <td>
+                        <a href="/Admin/Jobs/DeleteShift?shift_id=@js.id&job_id=@job.id" class="edit_del_shift" id="@js.id" title="Delete @js.shift1">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <label for="contact_select">
+        Who Should Be Notified?
+        <select id="edit_contact_select">
+            <option value="0">- Select Contact -</option>
+            @foreach (Admin.Contact c in contacts) {
+                <option value="@c.id">@c.name</option>
+            }
+        </select>
+    </label>
+    <table class="contact_table">
+        <thead>
+            <tr>
+                <th>Contacts</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Admin.Contact jcontact in job.Notifications.Select(x => x.Contact).ToList<Admin.Contact>()) {
+                <tr>
+                    <td>@jcontact.name</td>
+                    <td>
+                        <a href="/Admin/Jobs/DeleteContact?contact_id=@jcontact.id&job_id=@job.id" class="edit_del_contact" id="@jcontact.id" title="Delete @jcontact.name">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <input type="submit" id="btnSubmit" value="" />
+    <a href="/Admin/Jobs/Duplicate/@job.id" id="btnDuplicate">Duplicate</a>
+</form>
+<script type="text/javascript" src="/Admin/Scripts/custom/add_job.js"></script>

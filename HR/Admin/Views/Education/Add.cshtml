@@ -1,0 +1,22 @@
+﻿@{
+    string msg = ViewBag.msg;
+    msg = (msg == null) ? "" : msg;
+    
+    ViewBag.Title = "Add Education Level";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add New Education Level</h2>
+
+@if (msg.Length > 0) {
+    <p class="err">@msg</p>
+}
+
+<form action="/Admin/Education/Save" method="post" class="input_form">
+    <label for="education">
+        Education
+        <input type="text" name="education" id="education" placeholder="Enter the new education level" value="@ViewBag.education" />
+    </label>
+
+    <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+</form>

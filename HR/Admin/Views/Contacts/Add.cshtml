@@ -1,0 +1,74 @@
+﻿@{  
+    List<Admin.State> states = ViewBag.states;
+    states = (states == null)? new List<Admin.State>(): states;
+    
+    ViewBag.Title = "Add Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add New Contact</h2>
+
+<form action="/Admin/Contacts/Save" method="post" class="input_form">
+    <label for="name">
+        Name
+        <input type="text" name="name" id="name" placeholder="Enter the contacts name" />
+    </label>
+
+    <label for="street">
+        Street Address
+        <input type="text" name="street" id="street" placeholder="Enter the street address" />
+    </label>
+
+    <label for="city">
+        City
+        <input type="text" name="city" id="city" placeholder="Enter the city" />
+    </label>
+
+    <label for="state_id">
+        State
+        <select name="state_id" id="state_id">
+            <option value="@System.Guid.Empty">- Select a State -</option>
+            @foreach (Admin.State state in states) {
+                <option value="@state.id">@(state.abbr + " - " + state.state1)</option>
+            }
+        </select>
+    </label>
+
+    <label for="phone">
+        Phone
+        <input type="tel" name="phone" id="phone" placeholder="Enter a phone number" />
+    </label>
+
+    <label for="fax">
+        Fax
+        <input type="tel" name="fax" id="fax" placeholder="Enter a fax number" />
+    </label>
+
+    <label for="email">
+        E-Mail Address
+        <input type="email" name="email" id="email" placeholder="Enter an e-mail address" />
+    </label>
+
+    <label for="level">
+        Access Level
+        <select name="level" id="level">
+            <option value="USER">Regular User</option>
+            <option value="ADMIN">Administrator</option>
+        </select>
+    </label>
+
+    <label for="username">
+        Username
+        <input type="text" name="username" id="username" placeholder="Enter a username for administrative credentials" />
+        <span class="helper">Leave blank for no administrative access.</span>
+    </label>
+
+    <label for="password">
+        Password
+        <input type="password" name="pwd" id="password" placeholder="Enter a password for administrative credentials" />
+        <span class="helper">Leave blank for no administrative access.</span>
+    </label>
+
+    <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+</form>
+<script src="/Admin/Scripts/custom/contacts.js" type="text/javascript"></script>

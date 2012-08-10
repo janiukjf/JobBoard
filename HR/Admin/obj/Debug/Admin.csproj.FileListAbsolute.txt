@@ -1,0 +1,5 @@
+C:\Workspace\HR\HR\Admin\bin\Admin.dll
+C:\Workspace\HR\HR\Admin\bin\Admin.pdb
+C:\Workspace\HR\HR\Admin\obj\Debug\ResolveAssemblyReference.cache
+C:\Workspace\HR\HR\Admin\obj\Debug\Admin.dll
+C:\Workspace\HR\HR\Admin\obj\Debug\Admin.pdb

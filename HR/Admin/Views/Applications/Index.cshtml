@@ -1,0 +1,31 @@
+﻿@{
+    List<Admin.Application> applications = ViewBag.applications ?? new List<Admin.Application>();
+    
+    ViewBag.Title = "All Applications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>All Applications</h3>
+
+<table class="index_table">
+    <thead>
+        <tr>
+            <th>Applicant Name</th>
+            <th>Date Submitted</th>
+            <th>Job Applied For</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Admin.Application app in applications) {
+            <tr>
+                <td>@app.fname @app.lname</td>
+                <td>@Convert.ToDateTime(app.dateSubmitted)</td>
+                <td>@app.job.title</td>
+                <td class="last">
+                    <a href="/Admin/Application/@app.id" title="View @app.fname @app.lname's Application">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript" src="/Admin/Scripts/custom/applications.js"></script>

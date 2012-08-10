@@ -1,0 +1,166 @@
+﻿@{
+    ViewBag.Title = "Employment History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<HR.State> states = ViewBag.states;
+    if (states == null) { states = new List<HR.State>(); }
+
+    HR.Application app = ViewBag.application;
+    if (app == null) {
+        app = new HR.Application();
+    }
+    app.EmploymentHistories.Add(new HR.EmploymentHistory());
+
+    string err = ViewBag.error;
+
+    List<HR.Models.Crumb> crumbs = ViewBag.crumbs;
+    if (crumbs == null) {
+        crumbs = new List<HR.Models.Crumb>();
+    }
+}
+<link href="/Content/less/apply.css" rel="stylesheet" type="text/css" />
+
+@if (err.Length > 0) {
+    <p style="color:Red">@err</p>
+}
+
+<div class="noscript">
+    <img src="/Content/img/warning.png" alt="Warning" />
+    <span>You must enable javascript to apply for this position.</span>
+</div>
+
+
+@if (crumbs.Count > 0) {
+    <ul class="bread-crumbs">
+        @for (int i = 0; i < crumbs.Count; i++) {
+            <li class='@((crumbs[i].active) ? "active" : "")'>
+                @if (i == 0) {
+                    <a href="@((crumbs[i].disabled) ? "#" : crumbs[i].path)" title="@crumbs[i].title" class='@((crumbs[i].disabled) ? "disabled" : "")'>@crumbs[i].title</a>
+                } else {
+                    <span class="divider">/</span>
+                    <a href="@((crumbs[i].disabled) ? "#" : crumbs[i].path)" title="@crumbs[i].title" class='@((crumbs[i].disabled) ? "disabled" : "")'>@crumbs[i].title</a>
+                }
+            </li>
+        }
+    </ul>
+}
+<h3>Employment History</h3>
+
+<ul class="nav nav-tabs">
+    @foreach (HR.EmploymentHistory emp in app.EmploymentHistories.ToList<HR.EmploymentHistory>()) {
+        if (emp.employer != null && emp.employer.Length > 0) {
+            <li>
+                <a href="#@emp.employer.Replace(" ", "")">@emp.employer</a>
+            </li>
+        } else {
+            <li class="active">
+                <a href="#new">
+                    <i class="icon-plus"></i>
+                    New Employer
+                </a>
+            </li>
+        }
+    }
+</ul>
+<div class="tab-content">
+    @foreach (HR.EmploymentHistory emp in app.EmploymentHistories.ToList<HR.EmploymentHistory>()) {
+        <div class="tab-pane @((emp.employer == null || emp.employer.Length == 0)? "active": "")" id="@((emp.employer == null || emp.employer.Length == 0)? "new": emp.employer.Replace(" ",""))">
+            <form method="post" action="/Job/SaveEmployment/@app.id?job_id=@app.job_id&emp_id=@emp.id" class="input_form">
+                @if (emp.employer != null && emp.employer.Length > 0) {
+                    <a data-employer="@emp.employer" class="del-employer btn btn-large btn-danger" href="/Job/DeleteEmployment?job_id=@app.job_id&app_id=@app.id&emp_id=@emp.id">Delete Employer</a>
+                    <div class="clearfix"></div>
+                }
+                <div class="left_col">
+                    <label for="start_date">
+                        Start Date
+                        <input type="date" name="start_date" class="start_date" placeholder="Enter the starting date" required="required" title="You must enter a starting date" value="@((emp.start_date != null) ? String.Format("{0:M/d/yyyy}", emp.start_date) : "")" />
+                    </label>
+
+                    <label for="end_date">
+                        End Date
+                        <input type="date" name="end_date" class="end_date" placeholder="Enter the ending date" required="required" title="You must enter an ending date" value="@((emp.end_date != null) ? String.Format("{0:M/d/yyyy}", emp.end_date) : "")" />
+                    </label>
+
+                    <label for="employer">
+                        Employer
+                        <input type="text" name="employer" class="employer" placeholder="Enter the name of the employer" required="required" title="You must enter the name of your employer" value="@emp.employer" />
+                    </label>
+
+                    <label for="phone">
+                        Phone
+                        <input type="tel" name="phone" class="phone" placeholder="Enter the phone number" required="required" title="You must enter employers phone number" value="@emp.phone" />
+                    </label>
+
+                    <label for="address">
+                        Address
+                        <input type="text" name="address" class="address" placeholder="Enter the address of the employer" required="required" title="You must enter the address of the employer" value="@emp.address" />
+                    </label>
+
+                    <label for="city">
+                        City
+                        <input type="text" name="city" class="city" placeholder="Enter the city of the employer" required="required" title="You must enter the city of the employer" value="@emp.city" />
+                    </label>
+
+                    <label for="state_id">
+                        State
+                        <select name="state_id" class="state" required="required" title="Select a state">
+                            <option value="0">- Select State -</option>
+                            @foreach (HR.State state in states) {
+                                <option value="@state.id" @((emp.state_id == state.id)?"selected":"")>@state.abbr - @state.state1</option>
+                            }
+                        </select>
+                    </label>
+
+                    <label for="starting_title">
+                        Starting Job Title
+                        <input type="text" name="starting_title" class="starting_title" placeholder="Enter your starting job title" required="required" title="You must enter your starting job title" value="@emp.starting_title" />
+                    </label>
+
+                    <label for="ending_title">
+                        Ending Job Title
+                        <input type="text" name="ending_title" class="ending_title" placeholder="Enter your ending job title" required="required" title="You must enter your ending job title" value="@emp.end_title" />
+                    </label>
+                </div>
+                <div class="right_col">
+        
+                    <label for="supervisor">
+                        Supervisor &amp; Job Title
+                        <input type="text" name="supervisor" class="supervisor" placeholder="Enter immediate supervisor and supervisor's job title" required="required" title="You must enter your supervisor's name" value="@emp.supervisor" />
+                    </label>
+
+                    <label for="contact">
+                        May We Contact for Reference?
+                        <input type="radio" name="contact" class="contact_yes" value="1" @((emp.canContact == 1)?"checked":"") />Yes
+                        <input type="radio" name="contact" class="contact_no" value="0" @((emp.canContact != 1)?"checked":"") />No
+                    </label>
+
+                    <label for="reason_leaving">
+                        Reason for Leaving
+                        <input type="text" name="reason_leaving" class="reason_leaving" placeholder="Enter the reason for leaving" value="@emp.reason_leaving" />
+                    </label>
+
+                    <label for="summary">
+                        Summarize the nature of work preformed and job responsibilities
+                        <textarea cols="20" rows="5" name="summary" class="summary" required="required" placeholder="Enter summary..." title="You must summarize your job duties">@emp.summary</textarea>
+                    </label>
+
+                    <label for="starting_pay">
+                        Starting Wage
+                        <input type="text" name="starting_pay" class="starting_pay" placeholder="$" value="@emp.start_pay" />
+                    </label>
+
+                    <label for="ending_pay">
+                        Ending Wage
+                        <input type="text" name="ending_pay" class="ending_pay" placeholder="$" value="@emp.end_pay" />
+                    </label>
+                </div>
+                <div class="clearfix"></div>
+                <input type="submit" name="saveEmployment" id="saveEmployment_@(emp.id)" class="saveEmployment btnSubmit" value="" />
+                <input type="submit" name="addEmployment" id="addEmployment_@(emp.id)" class="addEmployment btnSubmit" value="" />
+            </form>
+        </div>
+    }
+</div>
+
+<script type="text/javascript" src="/Scripts/bootstrap-tabs.js"></script>
+<script type="text/javascript" src="/Scripts/custom/employment.js"></script>

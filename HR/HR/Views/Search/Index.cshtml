@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Job Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<HR.Models.DisplayableJob> jobs = ViewBag.jobs;
+    jobs = (jobs == null) ? new List<HR.Models.DisplayableJob>() : jobs;
+}
+
+<h2>Your search returned ( @jobs.Count ) listings.</h2>
+
+<section id="listings">
+    @foreach (HR.Models.DisplayableJob job in jobs) {
+        <article>
+            <div class="desc">
+                <span class="title">@job.title</span>
+                <p>@job.short_desc</p>
+                <span class="date">Posted: @Convert.ToDateTime(job.date_added).ToShortDateString()</span>
+            </div>
+            <div class="buttons">
+                <a href="/Job/View/@job.id" title="Read Full Description for @job.title">Read More</a>
+                <a href="/Job/Apply/@job.id" title="Apply for @job.title">Apply</a>
+            </div>
+            <div class="clearfix"></div>
+        </article>
+    }
+</section>

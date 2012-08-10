@@ -1,0 +1,43 @@
+﻿@{
+    List<Admin.Models.DisplayableContact> contacts = ViewBag.contacts;
+    if(contacts == null){ contacts = new List<Admin.Models.DisplayableContact>(); }
+    string msg = ViewBag.msg;
+    msg = (msg == null) ? "" : msg;
+    ViewBag.Title = "Contacts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="/Admin/Content/css/contact.css" rel="stylesheet" type="text/css" />
+<p class="index_desc">Below you will find a full list of all the contacts in the system. These contact records are used to add administrative users to the system. If you would like to add a contact and do not want them to have administrative rights, simply do not add a username/password for that user.</p>
+<a href="/Admin/Contacts/Add" title="Add Contact" class="index_add">
+    <img src="/Admin/Content/img/add_contact.png" alt="Add Contact" />
+</a>
+
+@if (msg.Length > 0) {
+    <p class="err" style="clear:both">@msg</p>
+}
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>E-Mail</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Admin.Models.DisplayableContact con in contacts) {
+            <tr>
+                <td>@con.name</td>
+                <td>@(con.street + " " + con.city + ", " + con.abbr)</td>
+                <td>@con.phone</td>
+                <td>@con.email</td>
+                <td class="last">
+                    <a href="/Admin/Contacts/@con.id" title="Edit @con.name">Edit</a> | 
+                    <a href="/Admin/Contacts/Delete/@con.id" title="Delete @con.name" class="del">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript" src="/Admin/Scripts/custom/contacts.js"></script>

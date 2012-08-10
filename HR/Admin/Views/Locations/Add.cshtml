@@ -1,0 +1,35 @@
+﻿@{
+    List<Admin.State> states = ViewBag.states;
+    states = (states == null) ? new List<Admin.State>() : states;
+
+    string msg = ViewBag.msg;
+    msg = (msg == null) ? "" : msg;
+    
+    ViewBag.Title = "Add Locations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add New Locations</h2>
+
+@if (msg.Length > 0) {
+    <p class="err">@msg</p>
+}
+
+<form action="/Admin/Locations/Save" method="post" class="input_form">
+    <label for="city">
+        City
+        <input type="text" name="city" id="city" placeholder="Enter the city of the Locations" value="@ViewBag.city" />
+    </label>
+
+    <label for="state_id">
+        State
+        <select name="state_id" id="state_id">
+            <option value="@System.Guid.Empty">- Select a State -</option>
+            @foreach (Admin.State state in states) {
+                <option value="@state.id" @((ViewBag.state_id == state.id)?"selected=selected":"")>@state.state1</option>
+            }
+        </select>
+    </label>
+
+    <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+</form>

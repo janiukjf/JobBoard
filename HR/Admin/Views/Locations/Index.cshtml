@@ -1,0 +1,48 @@
+﻿@{
+    List<Admin.Models.DisplayableLocation> locs = ViewBag.locs;
+    locs = (locs == null) ? new List<Admin.Models.DisplayableLocation>() : locs;
+    
+    string msg = ViewBag.msg;
+    msg = (msg == null) ? "" : msg;
+    
+    ViewBag.Title = "Locations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="/Admin/Content/css/location.css" rel="stylesheet" type="text/css" />
+<p class="index_desc">
+    Below you will find a list of all the job locations in the system. If you'd like to add a new location, click the button to the right.
+</p>
+
+<a href="/Admin/Locations/Add" title="Add Location" class="index_add">
+    <img src="/Admin/Content/img/add_location.png" alt="Add Location" />
+</a>
+<div class="clearfix"></div>
+
+@if (msg.Length > 0) {
+    <p class="err">@msg</p>
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>City</th>
+            <th>State</th>
+            <th>Job Listings</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Admin.Models.DisplayableLocation loc in locs) {
+            <tr>
+                <td>@loc.city</td>
+                <td>@loc.state</td>
+                <td>@loc.listing_count</td>
+                <td class="last">
+                    <a href="/Admin/Locations/@loc.id" title="Edit Location">Edit</a> | 
+                    <a href="/Admin/Locations/Delete/@loc.id" class="del" title="Delete Location">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="/Admin/Scripts/custom/location.js" type="text/javascript"></script>

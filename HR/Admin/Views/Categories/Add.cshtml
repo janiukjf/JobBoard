@@ -1,0 +1,45 @@
+﻿@{
+    List<Admin.Category> cats = ViewBag.cats;
+    cats = (cats == null) ? new List<Admin.Category>() : cats;
+
+    string msg = ViewBag.msg;
+    msg = (msg == null) ? "" : msg;
+    
+    ViewBag.Title = "Add Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add New Category</h2>
+
+@if (msg.Length > 0) {
+    <p class="err">@msg</p>
+}
+
+<form action="/Admin/Categories/Save" method="post" class="input_form">
+    <label for="name">
+        Name
+        <input type="text" name="name" id="name" placeholder="Enter the name of the category" value="@ViewBag.name" />
+    </label>
+
+    <label for="short_desc">
+        Short Description
+        <input type="text" name="short_desc" id="short_desc" placeholder="Enter a brief description of the category" value="@ViewBag.short_desc" />
+    </label>
+
+    <label for="long_desc">
+        Long Description
+        <textarea cols="80" rows="5" name="long_desc" id="long_desc" placeholder="Enter a full description of the category">@ViewBag.long_desc</textarea>
+    </label>
+
+    <label for="parent">
+        Parent Category
+        <select name="parent" id="parent">
+            <option value="@System.Guid.Empty">- Select Parent Category -</option>
+            @foreach (Admin.Category cat in cats) {
+                <option value="@cat.id">@cat.name</option>
+            }
+        </select>
+    </label>
+
+    <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+</form>

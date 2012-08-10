@@ -1,0 +1,56 @@
+﻿@{
+    List<Admin.State> states = ViewBag.states;
+    states = (states == null) ? new List<Admin.State>() : states;
+
+    Admin.Location loc = ViewBag.loc;
+    loc = (loc == null) ? new Admin.Location() : loc;
+
+    List<Admin.Job> jobs = ViewBag.jobs;
+    jobs = (jobs == null) ? new List<Admin.Job>() : jobs;
+    
+    string msg = ViewBag.msg;
+    msg = (msg == null) ? "" : msg;
+    
+    ViewBag.Title = "Edit Location";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Location</h2>
+
+@if (msg.Length > 0) {
+    <p class="err">@msg</p>
+}
+
+<form action="/Admin/Locations/Save/@loc.id" method="post" class="input_form">
+    <div class="left_col">
+        <label for="city">
+            City
+            <input type="text" name="city" id="city" placeholder="Enter the city of the location" value="@((ViewBag.city == null)?loc.city:ViewBag.city)" />
+        </label>
+
+        <label for="state_id">
+            State
+            <select name="state_id" id="state_id">
+                <option value="@System.Guid.Empty">- Select a State -</option>
+                @foreach (Admin.State s in states) {
+                    <option value="@s.id" @((s.id == loc.state_id) ? "selected=selected" : "")>@s.state1</option>
+                }
+            </select>
+        </label>
+
+        <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+    </div>
+    <div class="right_col">
+        <h4>Job Listings</h4>
+        @if (jobs.Count > 0) {
+            <ul>
+                @foreach (Admin.Job job in jobs) {
+                    <li>@job.title</li>
+                }
+            </ul>
+        } else {
+            <p>No Listings Available</p>
+        }
+    </div>
+    <div class="clearfix"></div>
+</form>

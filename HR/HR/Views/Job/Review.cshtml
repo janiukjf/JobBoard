@@ -1,0 +1,289 @@
+﻿@using System.Linq;
+@{
+    HR.Models.DisplayableJob job = ViewBag.job;
+    job = (job == null) ? new HR.Models.DisplayableJob() : job;
+
+    List<HR.State> states = ViewBag.states ?? new List<HR.State>();
+
+    HR.Application app = ViewBag.application;
+    if (app == null) {
+        app = new HR.Application();
+    }
+
+    List<HR.Models.Crumb> crumbs = ViewBag.crumbs;
+    if (crumbs == null) {
+        crumbs = new List<HR.Models.Crumb>();
+    }
+
+    ViewBag.Title = "Review";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="/Content/less/apply.css" rel="stylesheet" type="text/css" />
+<h2>Apply for @job.title</h2>
+
+<div class="noscript">
+    <img src="/Content/img/warning.png" alt="Warning" />
+    <span>You must enable javascript to apply for this position.</span>
+</div>
+
+@if (crumbs.Count > 0) {
+    <ul class="bread-crumbs">
+        @for (int i = 0; i < crumbs.Count; i++) {
+            <li class='@((crumbs[i].active) ? "active" : "")'>
+                @if (i == 0) {
+                    <a href="@((crumbs[i].disabled) ? "#" : crumbs[i].path)" title="@crumbs[i].title" class='@((crumbs[i].disabled) ? "disabled" : "")'>@crumbs[i].title</a>
+                } else {
+                    <span class="divider">/</span>
+                    <a href="@((crumbs[i].disabled) ? "#" : crumbs[i].path)" title="@crumbs[i].title" class='@((crumbs[i].disabled) ? "disabled" : "")'>@crumbs[i].title</a>
+                }
+            </li>
+        }
+    </ul>
+}
+<ul class="nav nav-tabs">
+    <li class="active">
+        <a href="#BasicInformation">Basic Information</a>
+    </li>
+    <li>
+        <a href="#EmploymentHistory">Employment History</a>
+    </li>
+    <li>
+        <a href="#EducationalBackground">Educational Background</a>
+    </li>
+    @if (job.isDriving == 1) {
+        <li>
+            <a href="#DrivingHistory">Driving History</a>
+        </li>
+    }
+    <li>
+        <a href="#Resume">Resume</a>
+    </li>
+    <li>
+        <a href="#SubmitApplication">Submit</a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="BasicInformation">
+        <div class="input_form">
+            <div class="left_col">
+                <h4>Name</h4>
+                <div class="well">
+                    @app.fname @app.mname @app.lname
+                </div>
+                <h4>Address</h4>
+                <div class="well">
+                    @app.address<br />
+                    @app.city, @states.Where(x => x.id.Equals(app.state_id)).Select(x => x.abbr).FirstOrDefault() @app.zip
+                </div>
+                <h4>Phone</h4>
+                <div class="well">
+                    Primary: @app.phone1<br />
+                    Secondary: @app.phone2
+                </div>
+                <h4>Referred By</h4>
+                <div class="well">
+                    @app.referred_by
+                </div>
+
+                <h4>Have you ever been employed here before?</h4>
+                <div class="well">@((app.previousEmployee == 0) ? "No" : "Yes, " + app.previousExplanation)</div>
+
+                <h4>Are you over 18 years of age?</h4>
+                <div class="well">@((app.isAdult == 0) ? "No" : "Yes")</div>
+
+                <h4>Are you legally eligible for employment in the United States?</h4>
+                <div class="well">@((app.isCitizen == 0) ? "No" : "Yes")</div>
+            </div>
+            <div class="right_col">
+                <h4>Are you presently employed?</h4>
+                <div class="well">@((app.isEmployed == 0) ? "No" : "Yes")</div>
+
+                <h4>Date available for work?</h4>
+                <div class="well">@String.Format("{0:M/d/yyyy}", app.date_available)</div>
+        
+                <h4>What is your desired salary range?</h4>
+                <div class="well">@String.Format("{0:C}", app.desired_start) to @String.Format("{0:C}", app.desired_end)</div>
+
+                <h4>Type of employed desired</h4>
+                <div class="well">@app.employment_type</div>
+
+                <h4>Type of shift preferred</h4>
+                <div class="well">@app.preferred_shift</div>
+
+                <h4>Have you ever been convicted of a felony?</h4>
+                <div class="well">@((app.Convictions == null || app.Convictions.ToList().Count == 0) ? "No" : "Yes")</div>
+
+                @if (app.Convictions != null && app.Convictions.Count > 0) {
+                    <h4>Convictions and Dates</h4>
+                    <div class="well">
+                        @foreach (HR.Conviction conv in app.Convictions.ToList()) {
+                            @String.Format("{0:M/d/yyyy}", conv.date_convicted)<text>:</text> @conv.conviction1
+                        }
+                    </div>
+                }
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="tab-pane" id="EmploymentHistory">
+        <div class="input_form">
+            @foreach (HR.EmploymentHistory emp in app.EmploymentHistories.ToList<HR.EmploymentHistory>()) {
+                if (emp.employer != null && emp.employer.Length > 0) {
+                    <h4>@emp.starting_title @((emp.starting_title != emp.end_title) ? " - " + emp.end_title : "")<small style="float: right;">From @String.Format("{0:M/d/yyyy}", emp.start_date) to @String.Format("{0:M/d/yyyy}", emp.end_date)<br /></small></h4>
+                    <div class="well employer">
+                        <div class="left_col">
+                            <h4>@emp.employer</h4>
+                            <address>
+                                @emp.address<br />
+                                @emp.city, @states.Where(x => x.id.Equals(emp.state_id)).Select(x => x.abbr).FirstOrDefault()<br />
+                                @emp.phone
+                            </address>
+                            <p><strong>Supervisor:</strong> @emp.supervisor<br />
+                                @((emp.canContact == 1) ? "Yes we can contact for reference" : "No, we cannot contact for reference")
+                            </p>
+                            <p><strong>Wages</strong><br />Start: @String.Format("{0:C}", emp.start_pay) &nbsp; End: @String.Format("{0:C}", emp.end_pay)</p>
+                        </div>
+                        <div class="right_col">
+                            <p><strong>Reason for Leaving</strong><br />@emp.reason_leaving</p>
+                            <p><strong>Summarize the nature of work preformed and job responsibilities</strong><br />@emp.summary</p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="tab-pane" id="EducationalBackground">
+        <div class="input_form">
+            <h4>Educational Background</h4>
+            <table class="table table-striped table-bordered edu-table">
+                <thead>
+                    <tr>
+                        <th>School</th>
+                        <th>Name/Location of School</th>
+                        <th>Years Completed</th>
+                        <th>GPA/Class Rank</th>
+                        <th>Diploma/ Degree Received</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (HR.EducationalBackground edu in app.EducationalBackgrounds.ToList<HR.EducationalBackground>()) {
+                        <tr id="@edu.id">
+                            <td>@edu.school_type</td>
+                            <td>@edu.ParseNameLocation()</td>
+                            <td>@edu.years_completed</td>
+                            <td>@edu.gpa</td>
+                            <td>@edu.degree</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <h4>Work References</h4>
+            <table class="table table-striped table-bordered ref-table">
+                <thead>
+                    <tr>
+                        <th>Name and Job Title</th>
+                        <th>Telephone Number</th>
+                        <th>Years Known</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (HR.Reference refer in app.References.ToList<HR.Reference>()) {
+                        <tr id="@refer.id">
+                            <td>@refer.name - @refer.job_title</td>
+                            <td>@refer.phone</td>
+                            <td>@refer.years_known</td>
+                        </tr>   
+                    }
+                </tbody>
+            </table>
+            <div class="left_col">
+                <h4>Military Service</h4>
+                @if (app.service_branch != "") {
+                    <h4>@app.service_branch<small style="float:right;">From @String.Format("{0:M/d/yyyy}", app.service_start) to @String.Format("{0:M/d/yyyy}", app.service_end)</small></h4>
+                    <div class="well">@app.rank_duties</div>
+                } else {
+                    <div class="well">None</div>
+                }
+            </div>
+            <div class="right_col">
+                <h4>Additional Traning, Skills, and Accomplishments</h4>
+                <div class="well">@((app.additional_info == "") ? "None" : app.additional_info)</div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    @if (job.isDriving == 1) {
+        <div class="tab-pane" id="DrivingHistory">
+            <div class="input_form">
+                <div class="left_col">
+                    <h4>Date of Birth</h4>
+                    <div class="well">@((app.dob != null) ? String.Format("{0:M/d/yyyy}", app.dob) : "")</div>
+
+                    <h4>Do you have a valid driver's license?</h4>
+                    <div class="well">@((app.valid_license == 1) ? "Yes" : "No")</div>
+
+                    <h4>Types of vehicles driven</h4>
+                    <div class="well">@app.vehicles_driven</div>
+
+                    <h4>Years of Driving Experience</h4>
+                    <div class="well">@app.years_driving</div>
+                </div>
+
+                <div class="right_col">
+                    <h3>Licenses</h3>
+                    <h4>Driver's License</h4>
+                    <div class="well">
+                        # @app.driver_license_num<br />
+                        State: @states.Where(x => x.id.Equals(app.driver_license_state)).Select(x => x.abbr).FirstOrDefault()
+                        Exp: @((app.driver_license_exp != null) ? String.Format("{0:M/d/yyyy}", app.driver_license_exp) : "")
+                    </div>
+                    @if (app.chauffeur_license_num != "") {
+                        <h4>Chauffeur License</h4>
+                        <div class="well">
+                            # @app.chauffeur_license_num<br />
+                            State: @states.Where(x => x.id.Equals(app.chauffeur_license_state)).Select(x => x.abbr).FirstOrDefault()
+                            Exp: @((app.chauffeur_license_exp != null) ? String.Format("{0:M/d/yyyy}", app.chauffeur_license_exp) : "")
+                        </div>
+                    }
+                    <h4>Were you involved in any accidents in the last three (3) years?</h4>
+                    <div class="well">@((app.inAccidents == 1) ? "Yes," : "No") @app.accidents_desc</div>
+
+                    <h4>Have you ever had your driver's license suspended, withdrawn, or denied?</h4>
+                    <div class="well">@((app.license_suspended == 1) ? "Yes," : "No") @app.suspended_desc</div>
+
+                    <h4>Have you had any convictions for traffic violations in the last three (3) years?</h4>
+                    <div class="well">@((app.traffic_violations == 1) ? "Yes," : "No") @app.violations_desc</div>
+                </div>
+                <div class="clearfix"></div>
+
+            </div>
+        </div>
+    }
+    <div class="tab-pane" id="Resume">
+        <div class="input_form">
+            <div class="left_col">
+                @foreach (HR.ApplicationFile file in app.ApplicationFiles) {
+                    <h4>@file.name</h4>
+                    <div class="well">
+                        <a href="/Job/ViewFile/@file.app_id?file_id=@file.id" target="_blank">@file.fileName</a>
+                    </div>
+                }
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="tab-pane" id="SubmitApplication">
+        @if (app.dateSubmitted == null) {
+            <p>The information on this application form is true and complete to the best of my knowledge.  Should I be employed by CURT Mfg., LLC, any misrepresentation or false statement contained herein may be considered cause for dismissal.  CURT Mfg., LLC has my permission to obtain all necessary information from the references I have listed, or any other sources, concerning my prior employment or personal history and I release all parties from any possible damages resulting from disclosing such information with or without prior written notice to  me.  I reserve the right to know the names and addresses of any investigative agencies used in order that I may learn the information contained in any reports furnished to CURT Mfg., LLC.</p>
+            <form method="post" action="/Job/Submit/@app.id">
+                <input type="submit" id="btnSubmit" class="btn btn-inverse" value="Submit Application" />
+            </form>
+        } else {
+            <p>This application was submitted on @String.Format("{0:dddd, MMMM d, yyyy} at {0:h:mm tt}",app.dateSubmitted).</p>
+        }
+    </div>
+</div>
+<script type="text/javascript" src="/Scripts/bootstrap-tabs.js"></script>
+<script type="text/javascript" src="/Scripts/custom/review.js"></script>

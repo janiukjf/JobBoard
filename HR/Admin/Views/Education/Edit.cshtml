@@ -1,0 +1,43 @@
+﻿@{
+    Admin.Education ed = ViewBag.ed;
+    ed = (ed == null) ? new Admin.Education() : ed;
+
+    List<Admin.Job> jobs = ViewBag.jobs;
+    jobs = (jobs == null) ? new List<Admin.Job>() : jobs;
+    
+    string msg = ViewBag.msg;
+    msg = (msg == null) ? "" : msg;
+    
+    ViewBag.Title = "Edit Education";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Education Level</h2>
+
+@if (msg.Length > 0) {
+    <p class="err">@msg</p>
+}
+
+<form action="/Admin/Education/Save/@ed.id" method="post" class="input_form">
+    <div class="left_col">
+        <label for="education">
+            Education Level
+            <input type="text" name="education" id="education" placeholder="Enter the education level" value="@((ViewBag.education == null)?ed.edu_level:ViewBag.education)" />
+        </label>
+
+        <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+    </div>
+    <div class="right_col">
+        <h4>Job Listings</h4>
+        @if (jobs.Count > 0) {
+            <ul>
+                @foreach (Admin.Job job in jobs) {
+                    <li>@job.title</li>
+                }
+            </ul>
+        } else {
+            <p>No Listings Available</p>
+        }
+    </div>
+    <div class="clearfix"></div>
+</form>

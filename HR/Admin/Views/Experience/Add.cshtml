@@ -1,0 +1,22 @@
+﻿@{
+    string msg = ViewBag.msg;
+    msg = (msg == null) ? "" : msg;
+    
+    ViewBag.Title = "Add Experience Levels";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add New Experience Level</h2>
+
+@if (msg.Length > 0) {
+    <p class="err">@msg</p>
+}
+
+<form action="/Admin/Experience/Save" method="post" class="input_form">
+    <label for="experience">
+        Experience
+        <input type="text" name="experience" id="experience" placeholder="Enter the new experience level" value="@ViewBag.experience" />
+    </label>
+
+    <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+</form>

@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "Driving";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<HR.Models.Crumb> crumbs = ViewBag.crumbs;
+    if (crumbs == null) {
+        crumbs = new List<HR.Models.Crumb>();
+    }
+
+    List<HR.State> states = ViewBag.states;
+    if (states == null) {
+        states = new List<HR.State>();
+    }
+
+    HR.Application app = ViewBag.application;
+    if (app == null) {
+        app = new HR.Application();
+    }
+
+    string err = ViewBag.error;
+}
+<link href="/Content/less/apply.css" rel="stylesheet" type="text/css" />
+
+@if (err.Length > 0) {
+    <p style="color: Red">@err</p>
+}
+
+<div class="noscript">
+    <img src="/Content/img/warning.png" alt="Warning" />
+    <span>You must enable javascript to apply for this position.</span>
+</div>
+
+@if (crumbs.Count > 0) {
+    <ul class="bread-crumbs">
+        @for (int i = 0; i < crumbs.Count; i++) {
+            <li class='@((crumbs[i].active) ? "active" : "")'>
+                @if (i == 0) {
+                    <a href="@((crumbs[i].disabled) ? "#" : crumbs[i].path)" title="@crumbs[i].title" class='@((crumbs[i].disabled) ? "disabled" : "")'>@crumbs[i].title</a>
+                } else {
+                    <span class="divider">/</span>
+                    <a href="@((crumbs[i].disabled) ? "#" : crumbs[i].path)" title="@crumbs[i].title" class='@((crumbs[i].disabled) ? "disabled" : "")'>@crumbs[i].title</a>
+                }
+            </li>
+        }
+    </ul>
+}
+<h2>Driving Background</h2>
+
+<form action="/Job/SaveDriving/@app.id" method="post" class="input_form">
+    <label for="dob">
+        Date of Birth
+        <input type="date" name="dob" id="dob" placeholder="Enter your date of birth" value="@((app.dob != null) ? String.Format("{0:M/d/yyyy}", app.dob) : "")" />
+    </label>
+
+    <label for="valid_license">
+        Do you have a valid driver's license?
+        <input type="radio" name="valid_license" id="valid_license_yes" value="1" @((app.valid_license == 1)?"checked":"") />Yes
+        <input type="radio" name="valid_license" id="valid_license_no" value="0" @((app.valid_license != 1)?"checked":"") />No
+    </label>
+
+    <label for="vehicles_driven">
+        Types of vehicles driven
+        <input type="text" name="vehicles_driven" id="vehicles_driven" placeholder="Enter the vehicles you have experience driving" value="@app.vehicles_driven" />
+    </label>
+
+    <label for="years_driving">
+        Years of Driving Experience
+        <input type="number" name="years_driving" id="years_driving" placeholder="Enter the number of years of driving experience" value="@app.years_driving" />
+    </label>
+
+    <h2>Licenses</h2>
+    <div class="left_col">
+        <h4>Driver's License</h4>
+        <label for="driver_license_num">
+            Driver's License Number
+            <input type="text" name="driver_license_num" id="driver_license_num" placeholder="Enter your driver's license number" value="@app.driver_license_num" />
+        </label>
+
+        <label for="driver_license_state">
+            Driver's License State
+            <select name="driver_license_state" id="driver_license_state">
+                <option value="@Guid.NewGuid()">- Select State -</option>
+                @foreach (HR.State state in states) {
+                    <option value="@state.id" @((app.driver_license_state == state.id)?"selected":"")>@state.abbr</option>
+                }
+            </select>
+        </label>
+
+        <label for="driver_license_exp">
+            Driver's License Expiration
+            <input type="date" name="driver_license_exp" id="driver_license_exp" placeholder="Enter the expiration date of your driver's license" value="@((app.driver_license_exp != null) ? String.Format("{0:M/d/yyyy}", app.driver_license_exp) : "")" />
+        </label>
+    </div>
+    <div class="right_col">
+        <h4>Chauffeur License</h4>
+        <label for="chauffeur_license_num">
+            Chauffeur's License Number
+            <input type="text" name="chauffeur_license_num" id="chauffeur_license_num" placeholder="Enter your chauffeur's license number" value="@app.chauffeur_license_num" />
+        </label>
+
+        <label for="chauffeur_license_state">
+            Chauffeur's License State
+            <select name="chauffeur_license_state" id="chauffeur_license_state">
+                <option value="@Guid.NewGuid()">- Select State -</option>
+                @foreach (HR.State state in states) {
+                    <option value="@state.id" @((app.chauffeur_license_state == state.id)?"selected":"")>@state.abbr</option>
+                }
+            </select>
+        </label>
+
+        <label for="chauffeur_license_exp">
+            Chauffeur's License Expiration
+            <input type="date" name="chauffeur_license_exp" id="chauffeur_license_exp" placeholder="Enter the expiration date of your chauffeur's license" value="@((app.chauffeur_license_exp != null) ? String.Format("{0:M/d/yyyy}", app.chauffeur_license_exp) : "")" />
+        </label>
+
+        
+    </div>
+    <div class="clearfix"></div>
+
+    <label for="inAccidents">
+        Were you involved in any accidents in the last three (3) years?
+        <input type="radio" name="inAccidents" id="inAccidents_yes" value="1" class="descriptors" @((app.inAccidents == 1)? "checked": "") />Yes
+        <input type="radio" name="inAccidents" id="inAccidents_no" value="0" class="descriptors" @((app.inAccidents != 1)? "checked": "") />No
+    </label>
+    <label for="accidents_desc" class="desc">
+        How many, and please describe with date
+        <textarea cols="60" rows="5" name="accidents_desc" id="accidents_desc" placeholder="Please describe the accidents and include date of occurance">@app.accidents_desc</textarea>
+    </label>
+
+    <label for="license_suspended">
+        Have you ever had your driver's license suspended, withdrawn, or denied?
+        <input type="radio" name="license_suspended" id="license_suspended_yes" class="descriptors" value="1" @((app.license_suspended == 1)? "checked": "") />Yes
+        <input type="radio" name="license_suspended" id="license_suspended_no" class="descriptors" value="0" @((app.license_suspended != 1)? "checked": "") />No
+    </label>
+    <label for="suspended_desc" class="desc">
+        Please explain
+        <textarea cols="60" rows="5" name="suspended_desc" id="suspended_desc" placeholder="Please explain">@app.suspended_desc</textarea>
+    </label>
+
+    <label for="traffic_violations">
+        Have you had any convictions for traffic violations in the last three (3) years?
+        <input type="radio" name="traffic_violations" id="traffic_violations_yes" class="descriptors" value="1" @((app.traffic_violations == 1)? "checked": "") />Yes
+        <input type="radio" name="traffic_violations" id="traffic_violations_no" class="descriptors" value="0" @((app.traffic_violations != 1)? "checked": "") />No
+    </label>
+    <label for="violations_desc" class="desc">
+        Please explain
+        <textarea cols="60" rows="5" name="violations_desc" id="violations_desc" placeholder="Please explain">@app.violations_desc</textarea>
+    </label>
+
+    <input type="submit" name="saveDriving" id="saveDriving" class="btnSubmit" value="" />
+</form>
+
+<script src="/Scripts/custom/driving.js" type="text/javascript"></script>

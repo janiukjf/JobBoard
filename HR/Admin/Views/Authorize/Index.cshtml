@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string msg = ViewBag.msg;
+    if (msg == null) { msg = ""; }
+
+    string username = ViewBag.username;
+    if (username == null) { username = ""; }
+
+    string redirect = ViewBag.redirect;
+    if (redirect == null) { redirect = ""; }
+}
+
+<form method="post" action="/Admin/Authorize/Login" id="login_form">
+
+    @if (msg.Length > 0) {
+        <p class="err">@msg</p>
+    }
+
+    <label for="username">
+        Username
+        <input type="text" name="username" id="username" placeholder="Enter your username" value="@username" />
+    </label>
+
+    <label for="password">
+        Password
+        <input type="password" name="password" id="password" placeholder="Enter your password" />
+    </label>
+
+    <input type="hidden" name="redirect" value="@redirect" />
+    <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+</form>
+<div class="login_info">
+    <h2>Login</h2>
+    <p>Please login to manage job postings and view submitted applications. If you have trouble logging in, please contact <a href="mailto:aninneman@curtmfg.com" title="Alex Ninneman">Alex Ninneman</a> for support.</p>
+</div>
+<div class="clearfix"></div>

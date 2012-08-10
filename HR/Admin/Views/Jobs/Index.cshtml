@@ -1,0 +1,34 @@
+﻿@{
+    List<Admin.Job> jobs = ViewBag.jobs ?? new List<Admin.Job>();
+    
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>All Jobs</h3>
+
+<table class="index_table">
+    <thead>
+        <tr>
+            <th>Job Title</th>
+            <th>Date Added</th>
+            <th>Application Count</th>
+            <th>State</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Admin.Job job in jobs) {
+            <tr>
+                <td>@job.title</td>
+                <td>@Convert.ToDateTime(job.date_added)</td>
+                <td>@job.Applications.Where(x => !x.dateSubmitted.Equals(null)).Count()</td>
+                <td>@job.jobState</td>
+                <td class="last">
+                    <a href="/Admin/Jobs/@job.id" title="Edit @job.title">Edit</a> | 
+                    <a href="/Admin/Jobs/Delete/@job.id" title="Delete @job.title" class="delete">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript" src="/Admin/Scripts/custom/add_job.js"></script>

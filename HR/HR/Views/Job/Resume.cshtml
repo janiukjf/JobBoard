@@ -1,0 +1,90 @@
+﻿@using System.Linq;
+@{
+    HR.Models.DisplayableJob job = ViewBag.job;
+    job = (job == null) ? new HR.Models.DisplayableJob() : job;
+
+    List<HR.State> states = ViewBag.states;
+    states = (states == null) ? new List<HR.State>() : states;
+
+    HR.Application app = ViewBag.application;
+    if(app == null){
+        app = new HR.Application();
+    }
+
+    List<HR.ApplicationFile> files = ViewBag.files ?? new List<HR.ApplicationFile>();
+    
+    string err = ViewBag.error;
+
+    List<HR.Models.Crumb> crumbs = ViewBag.crumbs;
+    if (crumbs == null) {
+        crumbs = new List<HR.Models.Crumb>();
+    }
+
+    ViewBag.Title = "Resumé";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="/Content/less/apply.css" rel="stylesheet" type="text/css" />
+<h2>Apply for @job.title</h2>
+
+@if (err.Length > 0) {
+    <p style="color:Red">@err</p>
+}
+
+<div class="noscript">
+    <img src="/Content/img/warning.png" alt="Warning" />
+    <span>You must enable javascript to apply for this position.</span>
+</div>
+
+<form method="post" action="/Job/SaveResume/@(app.id)" class="input_form" enctype="multipart/form-data">
+    @if (crumbs.Count > 0) {
+        <ul class="bread-crumbs">
+            @for (int i = 0; i < crumbs.Count; i++) {
+                <li class='@((crumbs[i].active)?"active":"")'>
+                    @if (i == 0) {
+                        <a href="@((crumbs[i].disabled)?"#":crumbs[i].path)" title="@crumbs[i].title" class='@((crumbs[i].disabled)?"disabled":"")'>@crumbs[i].title</a>
+                    } else {
+                        <span class="divider">/</span>
+                        <a href="@((crumbs[i].disabled)?"#":crumbs[i].path)" title="@crumbs[i].title" class='@((crumbs[i].disabled)?"disabled":"")'>@crumbs[i].title</a>
+                    }
+                </li>
+            }
+        </ul>
+    }
+    <h3>Attach Your Resumé</h3>
+    <div class="left_col">
+        <label for="name">
+            What are you uploading? (e.g. Resumé, Cover Letter, etc.)
+            <input type="text" name="name" id="name" placeholder="Enter a brief description" title="Enter a brief description" required="required" />
+        </label>
+
+        <label for="file">
+            Select your File (.doc, .docx, .pdf, .otd, .txt, .rtf) 3 MB Max 
+        </label>
+        <div class="fileupload fileupload-new" data-fileupload="file">
+            <input type="hidden" />
+            <div class="fileupload-preview uneditable-input"></div>
+            <span class="btn btn-file">
+                <span class="fileupload-new">Select file</span>
+                <span class="fileupload-exists">Change</span>
+                <input type="file" name="file" id="file" />
+            </span>
+            <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">Remove</a>
+        </div>
+        <br />
+        <input type="submit" name="btnSubmit" id="btnSubmit" class="btn btn-inverse" value="Upload" />
+    </div>
+    <div class="right_col">
+        @foreach (HR.ApplicationFile f in files) {
+            <h4>@f.name</h4>
+            <div class="well">
+                <a href="/Job/ViewFile/@f.app_id?file_id=@f.id" target="_blank">@f.fileName</a>
+                <a href="/Job/DeleteFile/@f.app_id?file_id=@f.id" class="deleteFile">&times;</a>
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+</form>
+<a href="/Job/Review/@app.id" class="btnContinue">Continue</a>
+<script type="text/javascript" src="/Scripts/bootstrap-fileupload.js"></script>
+<script src="/Scripts/custom/resume.js" type="text/javascript"></script>

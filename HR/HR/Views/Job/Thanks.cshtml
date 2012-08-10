@@ -1,0 +1,11 @@
+﻿@using System.Linq;
+@{
+    HR.Models.DisplayableJob job = ViewBag.job ?? new HR.Models.DisplayableJob();
+
+    ViewBag.Title = "Thank You For Applying";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="/Content/less/apply.css" rel="stylesheet" type="text/css" />
+<h2>Thank you for submitting your application for @job.title</h2>
+<p>Your application was submitted successfully. Good Luck!</p>
+<script type="text/javascript" src="/Scripts/bootstrap-tabs.js"></script>

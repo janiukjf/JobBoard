@@ -1,0 +1,36 @@
+﻿@{
+    HR.Category cat = ViewBag.cat;
+    if(cat == null){
+        cat = new HR.Category();
+    }
+    
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@cat.name</h2>
+
+<span class="cat-desc">@cat.short_desc</span>
+
+<p>@Html.Raw(cat.long_desc)</p>
+
+<section id="listings">
+    @if (cat.jobs.Count > 0) {
+        foreach (HR.Models.DisplayableJob job in cat.jobs) {
+        <article>
+            <div class="desc">
+                <span class="title">@job.title</span>
+                <p>@job.short_desc</p>
+                <span class="date">Posted: @Convert.ToDateTime(job.date_added).ToShortDateString()</span>
+            </div>
+            <div class="buttons">
+                <a href="/Job/View/@job.id" title="Read Full Description for @job.title">Read More</a>
+                <a href="/Job/Apply/@job.id" title="Apply for @job.title">Apply</a>
+            </div>
+            <div class="clearfix"></div>
+        </article>
+        }
+    } else {
+        <p>There are no jobs in this category. You may want to try another.</p>
+    }
+</section>

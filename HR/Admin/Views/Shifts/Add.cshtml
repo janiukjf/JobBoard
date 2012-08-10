@@ -1,0 +1,21 @@
+﻿@{
+    string msg = ViewBag.msg ?? "";
+    
+    ViewBag.Title = "Add Shift";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add New Shift</h2>
+
+@if (msg.Length > 0) {
+    <p class="err">@msg</p>
+}
+
+<form action="/Admin/Shifts/Save" method="post" class="input_form">
+    <label for="shift">
+        Shift
+        <input type="text" name="shift" id="shift" placeholder="Enter the new shift" value="@ViewBag.shift" />
+    </label>
+
+    <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+</form>

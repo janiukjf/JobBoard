@@ -1,0 +1,40 @@
+﻿@{
+    Admin.Shift shiftobj = ViewBag.shiftobj ?? new Admin.Shift();
+
+    List<Admin.Job> jobs = ViewBag.jobs ?? new List<Admin.Job>();
+    
+    string msg = ViewBag.msg ?? "";
+    
+    ViewBag.Title = "Edit Shift";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Shift</h2>
+
+@if (msg.Length > 0) {
+    <p class="err">@msg</p>
+}
+
+<form action="/Admin/Shifts/Save/@shiftobj.id" method="post" class="input_form">
+    <div class="left_col">
+        <label for="shift">
+            Shift
+            <input type="text" name="shift" id="shift" placeholder="Enter the shift" value="@((ViewBag.shift == null) ? shiftobj.shift1 : ViewBag.shift)" />
+        </label>
+
+        <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+    </div>
+    <div class="right_col">
+        <h4>Job Listings</h4>
+        @if (jobs.Count > 0) {
+            <ul>
+                @foreach (Admin.Job job in jobs) {
+                    <li>@job.title</li>
+                }
+            </ul>
+        } else {
+            <p>No Listings Available</p>
+        }
+    </div>
+    <div class="clearfix"></div>
+</form>

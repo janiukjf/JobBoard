@@ -1,0 +1,101 @@
+﻿@{
+    Admin.Models.DisplayableContact con = ViewBag.contact;
+    con = (con == null)? new Admin.Models.DisplayableContact(): con;
+    
+    List<Admin.State> states = ViewBag.states;
+    states = (states == null)? new List<Admin.State>(): states;
+    
+    List<Admin.Job> listings = ViewBag.listings;
+    listings = (listings == null)? new List<Admin.Job>(): listings;
+    
+    ViewBag.Title = "Edit " + con.name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit @con.name</h2>
+
+<form action="/Admin/Contacts/Save/@con.id" method="post" class="input_form">
+    <div class="left_col">
+        <label for="name">
+            Name
+            <input type="text" name="name" id="name" value="@con.name" placeholder="Enter the contacts name" />
+        </label>
+
+        <label for="street">
+            Street Address
+            <input type="text" name="street" id="street" value="@con.street" placeholder="Enter the street address" />
+        </label>
+
+        <label for="city">
+            City
+            <input type="text" name="city" id="city" value="@con.city" placeholder="Enter the city" />
+        </label>
+
+        <label for="state_id">
+            State
+            <select name="state_id" id="state_id">
+                <option value="@System.Guid.Empty">- Select a State -</option>
+                @foreach (Admin.State state in states) {
+                    <option value="@state.id" @((state.id == con.state_id)?"selected=selected":"")>@(state.abbr + " - " + state.state1)</option>
+                }
+            </select>
+        </label>
+
+        <label for="phone">
+            Phone
+            <input type="tel" name="phone" id="phone" placeholder="Enter a phone number" value="@con.phone" />
+        </label>
+
+        <label for="fax">
+            Fax
+            <input type="tel" name="fax" id="fax" placeholder="Enter a fax number" value="@con.fax" />
+        </label>
+
+        <label for="email">
+            E-Mail Address
+            <input type="email" name="email" value="@con.email" id="email" placeholder="Enter an e-mail address" />
+        </label>
+
+        <label for="level">
+            Access Level
+            <select name="level" id="level">
+                <option value="USER" @((con.level == Admin.Models.AuthLevel.USER.ToString()) ? "selected=selected" : "")>Regular User</option>
+                <option value="ADMIN" @((con.level == Admin.Models.AuthLevel.ADMIN.ToString())?"selected=selected":"")>Administrator</option>
+                <option value="DISABLED" @((con.level == Admin.Models.AuthLevel.DISABLED.ToString())?"selected=selected":"")>Disabled</option>
+            </select>
+        </label>
+
+        <label for="username">
+            Username
+            <input type="text" name="username" id="username" value="@con.username" placeholder="Enter a username for administrative credentials" />
+            <span class="helper">Leave blank for no administrative access.</span>
+        </label>
+
+        <label for="password">
+            Password
+            <input type="password" name="pwd" id="password" value="@con.password" placeholder="Enter a password for administrative credentials" @((con.password.Length > 0)?"disabled=disabled":"") />
+            <span class="helper">Leave blank for no administrative access.</span>
+            @if (con.password.Length > 0) {
+                <span class="helper"><a href="javascript:void(0)" class="change_pass">Click here</a> to change password.</span>
+            }
+        </label>
+
+        <input type="submit" name="btnSubmit" id="btnSubmit" value="" />
+    </div>
+    <div class="right_col">
+        <h4>Job Postings</h4>
+        @if (listings.Count > 0) {
+            <ul>
+                @foreach (Admin.Job listing in listings) {
+                    <li>
+                        <a href="/Admin/Job/@listing.id" title="Edit @listing.title">@listing.title</a>
+                    </li>
+                }
+            </ul>
+        } else {
+            <p>No postings at this time.</p>
+        }
+    </div>
+    <div class="clearfix"></div>
+</form>
+<script src="/Admin/Scripts/custom/contacts.js" type="text/javascript"></script>
