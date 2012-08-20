@@ -1,1 +1,10 @@
 C:\Workspace\HR\HR\HR\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\jjaniuk\Projects\HR\HR\HR\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\jjaniuk\Projects\HR\HR\HR\bin\HR.dll
+C:\Users\jjaniuk\Projects\HR\HR\HR\bin\HR.pdb
+C:\Users\jjaniuk\Projects\HR\HR\HR\bin\EntityFramework.dll
+C:\Users\jjaniuk\Projects\HR\HR\HR\bin\Newtonsoft.Json.dll
+C:\Users\jjaniuk\Projects\HR\HR\HR\bin\EntityFramework.xml
+C:\Users\jjaniuk\Projects\HR\HR\HR\bin\Newtonsoft.Json.xml
+C:\Users\jjaniuk\Projects\HR\HR\HR\obj\Debug\HR.dll
+C:\Users\jjaniuk\Projects\HR\HR\HR\obj\Debug\HR.pdb

@@ -3,3 +3,10 @@ C:\Workspace\HR\HR\Admin\bin\Admin.pdb
 C:\Workspace\HR\HR\Admin\obj\Debug\ResolveAssemblyReference.cache
 C:\Workspace\HR\HR\Admin\obj\Debug\Admin.dll
 C:\Workspace\HR\HR\Admin\obj\Debug\Admin.pdb
+C:\Users\jjaniuk\Projects\HR\HR\Admin\bin\Admin.dll
+C:\Users\jjaniuk\Projects\HR\HR\Admin\bin\Admin.pdb
+C:\Users\jjaniuk\Projects\HR\HR\Admin\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\jjaniuk\Projects\HR\HR\Admin\obj\Debug\Admin.dll
+C:\Users\jjaniuk\Projects\HR\HR\Admin\obj\Debug\Admin.pdb
+C:\Users\jjaniuk\Projects\HR\HR\Admin\bin\EntityFramework.dll
+C:\Users\jjaniuk\Projects\HR\HR\Admin\bin\EntityFramework.xml

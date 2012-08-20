@@ -94,12 +94,12 @@
 });
 
 var Reference = function () {
-    id = generateGUID(),
-    name = '',
-    job_title = '',
-    phone = '',
-    years_known = 0,
-    app_id = ''
+    this.id = generateGUID(),
+    this.name = '',
+    this.job_title = '',
+    this.phone = '',
+    this.years_known = 0,
+    this.app_id = ''
 };
 
 Reference.prototype = {
@@ -218,17 +218,17 @@ Reference.prototype = {
 
 
 var Education = function () {
-    id = generateGUID(),
-    school_type = '',
-    name = '',
-    address = '',
-    city = '',
-    state_id = '',
-    years_completed = 0,
-    gpa = '0.0',
-    degree = '',
-    app_id = '',
-    json = ''
+    this.id = generateGUID(),
+    this.school_type = '',
+    this.name = '',
+    this.address = '',
+    this.city = '',
+    this.state_id = '',
+    this.years_completed = 0,
+    this.gpa = '0.0',
+    this.degree = '',
+    this.app_id = '',
+    this.json = ''
 };
 
 Education.prototype = {
