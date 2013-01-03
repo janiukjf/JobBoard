@@ -240,6 +240,7 @@
     <Content Include="Views\Job\Review.cshtml" />
     <Content Include="Views\Job\Resume.cshtml" />
     <Content Include="Views\Job\Thanks.cshtml" />
+    <None Include="Properties\PublishProfiles\Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

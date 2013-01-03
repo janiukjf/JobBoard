@@ -290,6 +290,7 @@
     <Content Include="Views\Applications\Experiences.cshtml" />
     <Content Include="Views\Applications\Education.cshtml" />
     <Content Include="Views\Applications\Educations.cshtml" />
+    <None Include="Properties\PublishProfiles\Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
