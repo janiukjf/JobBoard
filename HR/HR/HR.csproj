@@ -161,6 +161,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Scripts\bootstrap-fileupload.js" />
     <Content Include="Scripts\bootstrap-modal.js" />
+    <Content Include="Scripts\custom\jquery.CompatibilityMode.0.1.js" />
     <Content Include="Scripts\custom\resume.js" />
     <Content Include="Scripts\custom\review.js" />
     <Content Include="Scripts\custom\driving.js" />

@@ -201,9 +201,7 @@
     <Content Include="Scripts\custom\global.js" />
     <Content Include="Scripts\custom\location.js" />
     <Content Include="Scripts\custom\plugins.js" />
-    <Content Include="Scripts\jquery-1.6.3-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.6.3.js" />
-    <Content Include="Scripts\jquery-1.6.3.min.js" />
+    <Content Include="Scripts\jquery-1.8.3.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.16.js" />
     <Content Include="Scripts\jquery-ui-1.8.16.min.js" />
     <Content Include="Scripts\jquery.dataTables.min.js" />

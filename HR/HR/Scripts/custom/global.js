@@ -1,11 +1,15 @@
 ﻿/* Author: */
-
+var compatibleWarning;
 $(function () {
     $('nav ul.top li.main').hoverIntent(function () {
         $(this).find('.sub').slideDown();
     }, function () {
         $(this).find('.sub').slideUp();
     });
+    /*if ($.browser.msie && ($.browser.version == '7.0' && navigator.userAgent.indexOf('Trident') != -1) || (document.documentMode != undefined && (Number($.browser.version) != Number(document.documentMode)))) {
+    alert("You're in compatibility mode");
+    }*/
+    $.CompatibilityMode(compatibleWarning);
 
     Modernize();
 });
@@ -30,4 +34,10 @@ function Modernize() {
             }
         });
     }
+}
+
+compatibleWarning = function () {
+    $('body').append('<div id="compatible"></div>');
+    $('#compatible').append('<div class="bg"></div>');
+    $('#compatible').append('<div class="warning"><h2>WARNING!! Internet Explorer Compatibility Mode Detected!!</h2><p>You currently are using internet explorer with compatibility mode enabled. Please turn off compatibility mode to continue using CURT Manufacturing\'s HR site.</p><p>Thank you,<br />CURT Manufacturing Ecommerce Team</p></div>');
 }

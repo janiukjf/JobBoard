@@ -59,11 +59,13 @@ html {
   margin:0px;
   padding: 0px;
   background: white url('../img/body_bg.png');
+  position: relative;
 }
 body {
   margin: 0;
   font-size: 13px;
   line-height: 1.231;
+  position: relative;
 }
 body,
 button,
@@ -88,6 +90,49 @@ textarea {
   color: #fff;
   text-shadow: none;
 }
+/* ==============================================================================
+   Compatibility Mode Warnings
+   ========================================================================== */
+#compatible {
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+}
+
+#compatible .bg {
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    filter: alpha(opacity=50);
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+
+#compatible .warning {
+    display: block;
+    position: relative;
+    background-color: #fff;
+    border: 5px solid #880000;
+    width: 500px;
+    z-index: 2;
+    padding: 10px 30px 20px;
+    margin: auto;
+    top: 30%;
+}
+
+#compatible .warning h2 {
+    font-size: 17px;
+    line-height: 1.8;
+    padding: 10px 0;
+}
+
 /* =============================================================================
    Links
    ========================================================================== */
