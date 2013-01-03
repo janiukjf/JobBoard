@@ -38,6 +38,8 @@ function Modernize() {
 
 compatibleWarning = function () {
     $('body').append('<div id="compatible"></div>');
+    $('#container').hide();
+    $('footer').hide();
     $('#compatible').append('<div class="bg"></div>');
     $('#compatible').append('<div class="warning"><h2>WARNING!! Internet Explorer Compatibility Mode Detected!!</h2><p>You currently are using internet explorer with compatibility mode enabled. Please turn off compatibility mode to continue using CURT Manufacturing\'s HR site.</p><p>Thank you,<br />CURT Manufacturing Ecommerce Team</p></div>');
     adjustWindow();
@@ -49,5 +51,7 @@ adjustWindow = function () {
     var divheight = $('#compatible .warning').outerHeight();
     var windowheight = $(window).height();
     var docscrollTop = $(document).scrollTop();
+    $('#compatible').css('height', windowheight + 'px');
+    $('#compatible').css('width', $(window).width() + 'px');
     $('#compatible .warning').css('top', (docscrollTop + ((windowheight / 2) - (divheight / 2))) + 'px');
 }
